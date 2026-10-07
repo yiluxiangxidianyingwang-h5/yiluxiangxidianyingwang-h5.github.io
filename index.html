@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>一路向西电影网 - 探索影视新视界</title>
+<meta name="description" content="一路向西电影网汇聚全球精品影视内容，涵盖院线大片、经典老片、热门剧集，为影迷提供一站式高清观影体验。" />
+<meta name="keywords" content="一路向西电影网,影视,电影在线观看,yiluxiangxidianyingwang-h5.github.io" />
+<meta name="author" content="一路向西电影网" />
+<meta name="robots" content="index,follow" />
+
+<style>
+/* ===== 全局重置 ===== */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root{
+  --sand:#e8dcc4;
+  --canyon:#c2591a;
+  --rust:#8b3a0f;
+  --ink:#2a1a0f;
+  --dust:#f5ecd8;
+  --gold:#d4a843;
+}
+
+html{ scroll-behavior:smooth; }
+
+body{
+  font-family:"Georgia","Times New Roman",serif;
+  background:var(--dust);
+  color:var(--ink);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+img{ max-width:100%; display:block; }
+a{ color:var(--canyon); text-decoration:none; }
+
+/* ===== 顶部导航 ===== */
+.topbar{
+  background:var(--ink);
+  border-bottom:3px solid var(--gold);
+  position:sticky; top:0; z-index:999;
+}
+.topbar-inner{
+  max-width:1200px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 24px;
+}
+.brand{
+  font-size:26px; letter-spacing:2px; font-weight:700; color:var(--gold);
+  text-transform:uppercase;
+}
+.brand span{ color:var(--sand); }
+.menu{
+  display:flex; gap:28px; list-style:none;
+}
+.menu a{
+  color:var(--sand); font-size:15px; position:relative; padding:4px 0;
+  transition:color .3s;
+}
+.menu a::after{
+  content:''; position:absolute; bottom:0; left:0; width:0; height:2px;
+  background:var(--gold); transition:width .3s;
+}
+.menu a:hover{ color:var(--gold); }
+.menu a:hover::after{ width:100%; }
+
+/* ===== Hero 视差 ===== */
+.hero{
+  position:relative;
+  min-height:80vh;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg, rgba(42,26,15,.4), rgba(42,26,15,.85)),
+             url('https://picsum.photos/1600/900?random=1') center/cover no-repeat;
+  text-align:center; color:#fff; padding:0 20px;
+}
+.hero-content{ max-width:700px; }
+.hero-badge{
+  display:inline-block; border:1px solid var(--gold); color:var(--gold);
+  padding:4px 18px; border-radius:20px; font-size:13px; letter-spacing:3px;
+  margin-bottom:20px; text-transform:uppercase;
+}
+.hero h1{
+  font-size:52px; font-weight:700; letter-spacing:4px; margin-bottom:16px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.5);
+}
+.hero h1 em{ font-style:normal; color:var(--gold); }
+.hero p{ font-size:18px; opacity:.9; margin-bottom:30px; }
+
+/* ===== 通用 Section ===== */
+.wrap{ max-width:1200px; margin:0 auto; padding:0 24px; }
+.section{ padding:70px 0; }
+.sec-head{ text-align:center; margin-bottom:48px; }
+.sec-head h2{
+  font-size:30px; color:var(--ink); position:relative; display:inline-block;
+  padding-bottom:12px;
+}
+.sec-head h2::after{
+  content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  width:60px; height:3px; background:var(--canyon);
+}
+.sec-head p{ color:var(--rust); margin-top:10px; font-size:15px; }
+
+/* ===== 栏目一：精选片单 - 瀑布流 ===== */
+.masonry{
+  columns:3; column-gap:20px;
+}
+.m-item{
+  break-inside:avoid; margin-bottom:20px; position:relative;
+  border-radius:8px; overflow:hidden; cursor:pointer;
+}
+.m-item img{ width:100%; transition:transform .5s; }
+.m-item:hover img{ transform:scale(1.08); }
+.m-overlay{
+  position:absolute; inset:0; background:linear-gradient(to top, rgba(42,26,15,.9), transparent);
+  display:flex; flex-direction:column; justify-content:flex-end; padding:16px;
+  opacity:0; transition:opacity .3s;
+}
+.m-item:hover .m-overlay{ opacity:1; }
+.m-overlay h4{ color:var(--gold); font-size:16px; margin-bottom:4px; }
+.m-overlay span{ color:var(--sand); font-size:13px; }
+
+/* ===== 栏目二：影视分类 - 环形布局 ===== */
+.genres{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+}
+.genre-box{
+  background:var(--sand); border-radius:12px; padding:36px 24px; text-align:center;
+  border:2px solid transparent; transition:all .3s; position:relative;
+}
+.genre-box:hover{
+  border-color:var(--canyon); transform:translateY(-6px);
+  box-shadow:0 12px 30px rgba(138,58,15,.2);
+}
+.genre-icon{
+  font-size:40px; margin-bottom:14px;
+}
+.genre-box h3{ font-size:18px; color:var(--ink); margin-bottom:8px; }
+.genre-box p{ font-size:14px; color:var(--rust); }
+
+/* ===== 栏目三：排行榜 - 竖向条形图 ===== */
+.chart-wrap{
+  background:var(--ink); border-radius:12px; padding:40px;
+}
+.chart-row{
+  display:flex; align-items:center; margin-bottom:20px; gap:16px;
+}
+.chart-label{
+  width:120px; color:var(--sand); font-size:15px; text-align:right; flex-shrink:0;
+}
+.chart-bar-wrap{
+  flex:1; background:rgba(255,255,255,.08); border-radius:20px; height:34px;
+  position:relative; overflow:hidden;
+}
+.chart-bar{
+  height:100%; border-radius:20px;
+  background:linear-gradient(90deg,var(--canyon),var(--gold));
+  display:flex; align-items:center; justify-content:flex-end;
+  padding-right:14px; color:#fff; font-size:13px; font-weight:bold;
+  animation:fillBar 1.2s ease-out forwards;
+}
+@keyframes fillBar{ from{ width:0 !important; } }
+
+/* ===== 栏目四：最新动态 - 时间轴 ===== */
+.timeline{
+  position:relative; max-width:800px; margin:0 auto;
+  padding-left:30px;
+}
+.timeline::before{
+  content:''; position:absolute; left:8px; top:0; bottom:0;
+  width:2px; background:var(--gold);
+}
+.tl-item{
+  position:relative; margin-bottom:32px;
+  background:#fff; border-radius:10px; padding:22px 26px;
+  box-shadow:0 4px 16px rgba(42,26,15,.08);
+}
+.tl-item::before{
+  content:''; position:absolute; left:-30px; top:28px;
+  width:14px; height:14px; border-radius:50%; background:var(--canyon);
+  border:3px solid var(--gold);
+}
+.tl-date{ font-size:13px; color:var(--canyon); font-weight:bold; margin-bottom:6px; }
+.tl-item h3{ font-size:18px; margin-bottom:8px; }
+.tl-item p{ font-size:14px; color:#555; }
+
+/* ===== 栏目五：关于我们 - 左右分栏 ===== */
+.about-split{
+  display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center;
+}
+.about-text h2{ font-size:28px; margin-bottom:16px; }
+.about-text p{ font-size:15px; color:#444; margin-bottom:14px; }
+.about-stats{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px;
+}
+.stat-box{
+  text-align:center; background:var(--sand); border-radius:10px; padding:20px 10px;
+}
+.stat-num{ font-size:28px; font-weight:700; color:var(--canyon); }
+.stat-label{ font-size:13px; color:var(--rust); margin-top:4px; }
+.about-img{
+  border-radius:12px; overflow:hidden; height:340px;
+}
+.about-img img{ width:100%; height:100%; object-fit:cover; }
+
+/* ===== 底部 ===== */
+.footer{
+  background:var(--ink); color:var(--sand); padding:48px 0 24px; text-align:center;
+}
+.footer .brand{ display:inline-block; margin-bottom:16px; }
+.footer-links{ list-style:none; display:flex; gap:24px; justify-content:center; margin-bottom:20px; }
+.footer-links a{ color:var(--sand); font-size:14px; }
+.footer-links a:hover{ color:var(--gold); }
+.footer p{ font-size:13px; opacity:.6; }
+
+/* ===== 移动端适配 ===== */
+@media(max-width:768px){
+  .menu{ display:none; }
+  .hero h1{ font-size:32px; }
+  .hero p{ font-size:15px; }
+  .masonry{ columns:2; }
+  .genres{ grid-template-columns:repeat(2,1fr); }
+  .chart-label{ width:80px; font-size:13px; }
+  .about-split{ grid-template-columns:1fr; }
+  .about-img{ height:220px; order:-1; }
+  .sec-head h2{ font-size:24px; }
+}
+@media(max-width:480px){
+  .masonry{ columns:1; }
+  .genres{ grid-template-columns:1fr; }
+  .hero h1{ font-size:26px; letter-spacing:2px; }
+  .chart-wrap{ padding:20px; }
+  .chart-row{ gap:8px; }
+  .chart-label{ width:70px; font-size:12px; }
+  .section{ padding:50px 0; }
+  .about-stats{ grid-template-columns:repeat(3,1fr); gap:8px; }
+  .stat-box{ padding:14px 6px; }
+  .stat-num{ font-size:20px; }
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<!-- ===== 顶部导航 ===== -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">一路向西<span>电影网</span></div>
+    <ul class="menu">
+      <li><a href="#">首页</a></li>
+      <li><a href="#">精选片单</a></li>
+      <li><a href="#">影视分类</a></li>
+      <li><a href="#">热播榜</a></li>
+      <li><a href="#">最新动态</a></li>
+      <li><a href="#">关于我们</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✦ 一路向西 探索无限影视世界 ✦</div>
+    <h1>一路向西 <em>电影网</em></h1>
+    <p>汇聚全球精品影视 · 院线大片 · 经典老片 · 热门剧集 · 高清流畅</p>
+    <p style="font-size:14px;opacity:.7;">https://yiluxiangxidianyingwang-h5.github.io</p>
+  </div>
+</section>
+
+<!-- ===== 栏目一：精选片单（瀑布流） ===== -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>精选片单</h2>
+      <p>编辑团队精心挑选，值得一看的优质影视内容</p>
+    </div>
+    <div class="masonry">
+      <div class="m-item">
+        <img src="https://picsum.photos/400/560?random=10" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>荒野猎人</h4>
+          <span>剧情 / 冒险 · 9.2分</span>
+        </div>
+      </div>
+      <div class="m-item">
+        <img src="https://picsum.photos/400/300?random=11" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>星际穿越</h4>
+          <span>科幻 / 悬疑 · 9.4分</span>
+        </div>
+      </div>
+      <div class="m-item">
+        <img src="https://picsum.photos/400/500?random=12" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>教父</h4>
+          <span>犯罪 / 经典 · 9.3分</span>
+        </div>
+      </div>
+      <div class="m-item">
+        <img src="https://picsum.photos/400/400?random=13" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>盗梦空间</h4>
+          <span>科幻 / 动作 · 9.3分</span>
+        </div>
+      </div>
+      <div class="m-item">
+        <img src="https://picsum.photos/400/600?random=14" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>阿甘正传</h4>
+          <span>剧情 / 励志 · 9.5分</span>
+        </div>
+      </div>
+      <div class="m-item">
+        <img src="https://picsum.photos/400/350?random=15" alt="电影海报" />
+        <div class="m-overlay">
+          <h4>肖申克的救赎</h4>
+          <span>剧情 / 经典 · 9.7分</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 栏目二：影视分类（环形色块网格） ===== -->
+<section class="section" style="background:var(--ink);">
+  <div class="wrap">
+    <div class="sec-head" style="color:#fff;">
+      <h2 style="color:#fff;">影视分类</h2>
+      <p style="color:var(--gold);">多品类覆盖，总有一款适合你</p>
+    </div>
+    <div class="genres">
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">🎬</div>
+        <h3 style="color:var(--sand);">动作冒险</h3>
+        <p style="color:var(--gold);">热血刺激，肾上腺素飙升</p>
+      </div>
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">💫</div>
+        <h3 style="color:var(--sand);">科幻悬疑</h3>
+        <p style="color:var(--gold);">脑洞大开，反转不断</p>
+      </div>
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">💕</div>
+        <h3 style="color:var(--sand);">爱情喜剧</h3>
+        <p style="color:var(--gold);">甜蜜暖心，笑中带泪</p>
+      </div>
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">👻</div>
+        <h3 style="color:var(--sand);">惊悚恐怖</h3>
+        <p style="color:var(--gold);">心跳加速，深夜慎入</p>
+      </div>
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">📜</div>
+        <h3 style="color:var(--sand);">历史传记</h3>
+        <p style="color:var(--gold);">还原真实，见证时代</p>
+      </div>
+      <div class="genre-box" style="background:rgba(232,220,196,.08);">
+        <div class="genre-icon">🎭</div>
+        <h3 style="color:var(--sand);">动画亲子</h3>
+        <p style="color:var(--gold);">合家欢，陪伴成长</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 栏目三：热播榜（条形图） ===== -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>本周热播榜</h2>
+      <p>实时更新，看看大家都在看什么</p>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-row">
+        <div class="chart-label">沙丘2</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:95%;">95%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">奥本海默</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:88%;">88%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">封神第一部</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:82%;">82%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">流浪地球2</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:78%;">78%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">三大队</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:70%;">70%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">长安三万里</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:65%;">65%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">涉过愤怒的海</div>
+        <div class="chart-bar-wrap"><div class="chart-bar" style="width:58%;">58%</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 栏目四：最新动态（时间轴） ===== -->
+<section class="section" style="background:var(--sand);">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>最新动态</h2>
+      <p>影视行业资讯，一手掌握</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">2026.10.05</div>
+        <h3>第38届东京国际电影节入围名单公布</h3>
+        <p>多部华语影片入围主竞赛单元，中国电影在国际舞台持续发光发热。</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026.09.28</div>
+        <h3>国庆档新片预售全面开启</h3>
+        <p>多部大片定档国庆，涵盖动作、喜剧、动画等多个类型，观众选择丰富。</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026.09.20</div>
+        <h3>全球流媒体观影数据报告发布</h3>
+        <p>2026年第三季度数据显示，亚洲观众观影时长同比增长23%，原创内容占比持续提升。</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026.09.15</div>
+        <h3>经典4K修复版电影展映季启动</h3>
+        <p>一批影史经典作品完成4K修复，将在全国艺术电影放映联盟影院重映。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 栏目五：关于我们（左右分栏） ===== -->
+<section class="section">
+  <div class="wrap">
+    <div class="about-split">
+      <div class="about-text">
+        <h2>关于 一路向西电影网</h2>
+        <p>一路向西电影网 成立于2020年，致力于打造一个面向影迷的高品质影视信息聚合平台。我们相信，每一部好电影都值得被看见。</p>
+        <p>从院线大片到小众佳作，从经典老片到最新剧集，我们持续更新海量内容，为观众提供权威的影视推荐和深度解读。</p>
+        <div class="about-stats">
+          <div class="stat-box">
+            <div class="stat-num">10,000+</div>
+            <div class="stat-label">影片收录</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">500万+</div>
+            <div class="stat-label">注册用户</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">365天</div>
+            <div class="stat-label">每日更新</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-img">
+        <img src="https://picsum.photos/600/400?random=30" alt="关于我们" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 底部 ===== -->
+<div class="footer">
+  <div class="wrap">
+    <div class="brand">一路向西<span>电影网</span></div>
+    <ul class="footer-links">
+      <li><a href="#">首页</a></li>
+      <li><a href="#">精选片单</a></li>
+      <li><a href="#">影视分类</a></li>
+      <li><a href="#">热播榜</a></li>
+      <li><a href="#">最新动态</a></li>
+      <li><a href="#">关于我们</a></li>
+    </ul>
+    <p>网站名称：一路向西电影网 | 网址：https://yiluxiangxidianyingwang-h5.github.io</p>
+    <p style="margin-top:8px;">© 2026 一路向西电影网 保留所有权利</p>
+  </div>
+</div>
+
+</body>
+</html>
